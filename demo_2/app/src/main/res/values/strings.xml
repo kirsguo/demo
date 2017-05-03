@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">V2X_demo</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
