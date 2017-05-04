@@ -1,4 +1,4 @@
-package com.example.kirsguo.demo_2;
+package com.example.kirsguo.demo_2.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.kirsguo.demo_2.R;
 
 /**
  * Created by Kirsguo on 2017/4/6.

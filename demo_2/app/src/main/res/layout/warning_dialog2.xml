@@ -62,7 +62,7 @@
                 android:id="@+id/tlosa_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/left"
+                android:src="@drawable/tlosa_left_green"
                 android:layout_weight="1"
 
                 />
@@ -70,14 +70,14 @@
                 android:id="@+id/tlosa_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/head"
+                android:src="@drawable/tlosa_head_green"
                 android:layout_weight="1"
                 />
             <ImageView
                 android:id="@+id/tlosa_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/right"
+                android:src="@drawable/tlosa_right_green"
                 android:layout_weight="1"
                 />
         </LinearLayout>

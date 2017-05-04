@@ -1,4 +1,4 @@
-package com.example.kirsguo.demo_2;
+package com.example.kirsguo.demo_2.app;
 
 import android.app.Service;
 import android.content.Intent;
@@ -13,12 +13,20 @@ import android.os.Process;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
+import static com.example.kirsguo.demo_2.util.Constants.APP_ID_APPIntersectionCollisionWarning;
+import static com.example.kirsguo.demo_2.util.Constants.APP_ID_APPTrafficLightOptimalSpeedAdvisory;
+import static com.example.kirsguo.demo_2.util.Constants.ERROR_MESSAGE;
+import static com.example.kirsguo.demo_2.util.Constants.MESSAGE_FROM_DISPATCHER;
+import static com.example.kirsguo.demo_2.util.Constants.NORMAL_MESSAGE;
+
 
 public class DispatcherService extends Service {
     private static final String TAG = "DispatcherService";
     private static final int ForMyself = -1;
-    private static final int NORMAL_MESSAGE = 0;
-    private static final int MESSAGE_FROM_DISPATCHER = 2;
+
 
 
     private volatile boolean mIsWork = false;
@@ -39,7 +47,10 @@ public class DispatcherService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
-            Log.i(TAG, "CurrentThread in Dispatcher: "+Thread.currentThread().getId());
+            if (UIHandler!=null){
+                Log.i(TAG, "CurrentThread in Dispatcher: "+Thread.currentThread().getId());
+            }
+
             // TODO:处理消息的应用逻辑
             switch (msg.what) {
 //                初始化加载JSON后，向LDM发送订阅消息SubscribeMsg
@@ -53,7 +64,7 @@ public class DispatcherService extends Service {
                     }
                     if (UIHandler != null) {
                         Message subMsg = Message.obtain();
-                        subMsg.what = NORMAL_MESSAGE;
+                        subMsg.what = ERROR_MESSAGE;
                         subMsg.arg1 = MESSAGE_FROM_DISPATCHER;
                         subMsg.obj = "hello";
                         UIHandler.sendMessage(subMsg);
@@ -62,7 +73,34 @@ public class DispatcherService extends Service {
                 }
                 case NORMAL_MESSAGE:{
                     if (msg != null) {
-                        Log.i(TAG, "handle UI Message:" + msg.obj.toString());
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        HashSet<String> a1 =new HashSet<String>();
+                        a1.add(APP_ID_APPIntersectionCollisionWarning);
+                        a1.add(APP_ID_APPTrafficLightOptimalSpeedAdvisory);
+                        HashMap<String,String> map_2 = new HashMap<String, String>();
+                        map_2.put("collisionLevel","1");
+                        map_2.put("RVToMe","left");
+                        HashMap<String,String> map_1 = new HashMap<String, String>();
+                        map_1.put("leftStatus","1");
+                        map_1.put("leftTimeLeft","20");
+                        map_1.put("leftMaxSpeed","100");
+                        map_1.put("leftMinSpeed","10");
+                        map_1.put("headStatus","1");
+                        map_1.put("headTimeLeft","20");
+                        map_1.put("headMaxSpeed","100");
+                        map_1.put("headMinSpeed","10");
+                        map_1.put("rightStatus","7");
+                        HashMap<String,HashMap<String,String>> tmp = new HashMap<String, HashMap<String, String>>();
+                        tmp.put(APP_ID_APPIntersectionCollisionWarning,map_2);
+                        tmp.put(APP_ID_APPTrafficLightOptimalSpeedAdvisory,map_1);
+                        Message message = Message.obtain();
+                        message.what = NORMAL_MESSAGE;
+                        message.obj = tmp;
+                        UIHandler.sendMessage(message);
                     }
                 }
                 default:

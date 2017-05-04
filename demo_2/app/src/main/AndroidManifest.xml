@@ -25,7 +25,7 @@
             android:value="d9625890d01524cd820b49d1ce039c3d" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -36,15 +36,15 @@
         </activity>
 
         <service android:name="com.amap.api.location.APSService" />
-        <service android:name=".DispatcherService"
+        <service android:name=".app.DispatcherService"
             android:enabled="true"
             android:exported="true"/>
         <activity
-            android:name=".Setting_UI"
+            android:name=".ui.Setting_UI"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Setting_COMM"
+            android:name=".ui.Setting_COMM"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
     </application>
