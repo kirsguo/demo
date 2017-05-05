@@ -1,0 +1,79 @@
+{ "COMM":[
+      {
+        "targetip":"192.168.10.224",
+        "targetport":"6518",
+        "myport":"8000",
+        "appname":"V2XAPP",
+        "boxtype":"1"
+      }
+    ],
+  "APP":
+    [
+      {
+        "APPName": "TrafficSign",
+        "enabled": 1,
+        "ID": "V2XAPP_002",
+        "subscribleMsg":
+            [
+              {
+                "className": "BSMSign",
+                "filterCode":"1111010111110001"
+              }
+
+            ],
+        "threshold":
+            {
+              "DWTmin": "1",
+              "MLT": "1",
+              "MDRT": "1",
+              "MAT":"1",
+              "Epsilon": "1"
+            }
+      },
+      {
+        "APPName":"APPIntersectionCollisionWarning",
+        "enabled": 1,
+        "ID": "V2XAPP_003",
+        "subscribleMsg":
+            [
+              {
+                "className": "CLASS_ID_BSMVEHICLE",
+                "filterCode":"1111101011111100"
+              }
+            ],
+        "threshold":
+            {
+              "DWTmin": "1",
+              "MLT": "1",
+              "MDRT": "1",
+              "MAT":"1",
+              "Epsilon": "1"
+            }
+
+      }
+        ,
+      {
+        "APPName": "APPTrafficLightOptimalSpeedAdvisory",
+
+          "ID": "V2XAPP_004",
+          "enabled": 1,
+          "subscribleMsg":
+          [
+            {
+              "className": "CLASS_ID_BSMTRAFFICLIGHT",
+              "filterCode":"0101010111110001"
+            }
+
+          ],
+          "threshold":
+          {
+            "DWTmin": "1",
+            "MLT": "1",
+            "MDRT": "1",
+            "MAT":"1",
+            "Epsilon": "1"
+          }
+      }
+    ]
+
+}

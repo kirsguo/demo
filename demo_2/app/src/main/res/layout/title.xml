@@ -10,6 +10,7 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:background="@android:color/background_dark"
+        android:textSize="24sp"
         android:text="返回"
         android:textColor="#fff"/>
     <TextView
