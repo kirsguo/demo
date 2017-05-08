@@ -1,7 +1,7 @@
 package com.example.kirsguo.demo_2.ui;
 
 import android.content.Context;
-import android.content.res.AssetManager;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +14,12 @@ import com.example.kirsguo.demo_2.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 
 import Bean.ConfigurationBean;
 

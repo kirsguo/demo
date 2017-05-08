@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -91,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private HashMap<String,HashMap<String,String>> apps_last = new HashMap<String,HashMap<String,String>>();
     private HashSet<String> appName_tmp = new HashSet<String>();
     private HashSet<String> appName_last = new HashSet<String>();
+    HashSet<String> onlyME = new HashSet<>();
+    HashSet<String> meAndSign = new HashSet<>();
     private boolean isSameApps = true;
     /***
      *服务
@@ -107,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                     case NORMAL_MESSAGE:
                         isSameApps = true;
                         if (apps_last.isEmpty()){
+                            onlyME.add(APP_ID_Me);
+                            meAndSign.add(APP_ID_Me);
+                            meAndSign.add(APP_ID_TrafficSign);
                             apps_last = (HashMap<String,HashMap<String,String>>)msg.obj;
                             Set<String> last = apps_last.keySet();
                             for (String appname:last){
@@ -131,11 +137,19 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                             apps_tmp =  null;
 //                            Log.i(TAG, "handleMessage: "+"last:"+appName_last.toString()+appName_last.size());
                         }
-                        if (isSameApps){
 
+
+
+                        if (appName_last.equals(onlyME)||appName_last.equals(meAndSign)){
+                            if (appDialog != null&&appDialog.isShowing()){
+                                appDialog.dismiss();
+
+                            }
                             updateDialog();
-                        }else if ((appName_last.size() - 2) == 0){
-                            if (appDialog.isShowing()){
+                        }else if (isSameApps){
+                            updateDialog();
+                        }else {
+                            if (appDialog != null&&appDialog.isShowing()){
                                 appDialog.dismiss();
                             }
                             initDialog();
@@ -181,9 +195,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
      * 主界面控件
      */
     private TextView car_speed;
+    private Dialog appDialog = null;
+    private UIErrorDialog errorDialog = null;
 //  测试用
     private ImageView mineState;
-    private Dialog appDialog = null;
+
     private ImageView demo2;
     private ImageView demo3;
 
@@ -260,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         demo3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                initErrorDialog("错误","按时付款了就爱好看了伐");
             }
         });
 
@@ -321,6 +337,22 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
             mIsBound = false;
             unbindService(connection);
         }
+    }
+    private void initErrorDialog(String title,String message){
+        errorDialog = new UIErrorDialog(MainActivity.this);
+        errorDialog.setTitle(title);
+        errorDialog.setMessage(message);
+        errorDialog.setYesOnclickListener("确定", new UIErrorDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                errorDialog.dismiss();
+                unbindAppService();
+                startActivity(i);
+            }
+        });
+        errorDialog.show();
     }
 
 
@@ -433,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                                 left_img.setImageResource(R.drawable.tlosa_left_yellow);break;
                         }
                         TextView left_text = (TextView)appDialog.findViewById(R.id.tlosa_left_value);
-                        left_text.setText(app_4.get("leftTimeLeft")+"s");
+                        left_text.setText(app_4.get("leftTimeLeft"));
                         TextView left_max = (TextView)appDialog.findViewById(R.id.tlosa_left_max_value);
                         left_max.setText(app_4.get("leftMaxSpeed"));
                         TextView left_min = (TextView)appDialog.findViewById(R.id.tlosa_left_min_value);
@@ -458,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                                 head_img.setImageResource(R.drawable.tlosa_head_yellow);break;
                         }
                         TextView head_text = (TextView)appDialog.findViewById(R.id.tlosa_head_value);
-                        head_text.setText(app_4.get("headTimeLeft")+"s");
+                        head_text.setText(app_4.get("headTimeLeft"));
                         TextView head_max = (TextView)appDialog.findViewById(R.id.tlosa_head_max_value);
                         head_max.setText(app_4.get("headMaxSpeed"));
                         TextView head_min = (TextView)appDialog.findViewById(R.id.tlosa_head_min_value);
@@ -483,7 +515,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                                 right_img.setImageResource(R.drawable.tlosa_right_yellow);break;
                         }
                         TextView right_text = (TextView)appDialog.findViewById(R.id.tlosa_right_value);
-                        right_text.setText(app_4.get("headTimeLeft")+"s");
+                        right_text.setText(app_4.get("headTimeLeft"));
                         TextView right_max = (TextView)appDialog.findViewById(R.id.tlosa_right_max_value);
                         right_max.setText(app_4.get("headMaxSpeed"));
                         TextView right_min = (TextView)appDialog.findViewById(R.id.tlosa_right_min_value);
@@ -502,9 +534,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private void initMap(){
 
         if (aMap == null){
+
             aMap = mapView.getMap();
 
         }
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(20));
         //设置定位监听
         aMap.setLocationSource(this);
         myStyle = new MyLocationStyle();
@@ -517,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         // 是否可触发定位并显示定位层
         aMap.setMyLocationEnabled(true);
 
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(20));
+
 
 
 

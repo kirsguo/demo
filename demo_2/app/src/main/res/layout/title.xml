@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_dark">
+    android:background="#181A19">
     <Button
         android:id="@+id/title_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:background="@android:color/background_dark"
-        android:textSize="24sp"
+        android:background="#181A19"
+        android:textSize="18sp"
         android:text="返回"
-        android:textColor="#fff"/>
+        android:textColor="#fffff0"/>
     <TextView
         android:id="@+id/title_text"
         android:layout_width="0dp"
@@ -21,7 +21,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="设置"
-        android:textColor="#fff"
+        android:textColor="#fffff0"
         android:textSize="24sp"/>
 
 </LinearLayout>

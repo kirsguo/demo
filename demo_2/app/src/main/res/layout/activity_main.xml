@@ -15,12 +15,12 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light">
+            android:background="@android:color/transparent">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@android:color/background_dark"
+                android:background="@android:color/transparent"
                 android:layout_weight="1"
                 >
 
@@ -30,7 +30,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/car"
-
                     android:layout_weight="1"
                     />
                 <TextView
@@ -38,8 +37,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="20km/h"
-                    android:textSize="24sp"/>
+                    android:text="100KM/H"
+                    android:textSize="20sp"
+                    android:textColor="#fffff0"/>
                 <ImageView
                     android:id="@+id/application_image"
                     android:layout_width="wrap_content"
@@ -55,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="碰撞避免"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="#fffff0"/>
                 <ImageView
                     android:id="@+id/road_state"
                     android:layout_width="wrap_content"
@@ -68,7 +69,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="10">
+                android:layout_weight="9.5">
                 <com.amap.api.maps.MapView
                     android:id="@+id/map"
                     android:layout_width="match_parent"
@@ -84,7 +85,7 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/setting_menu"

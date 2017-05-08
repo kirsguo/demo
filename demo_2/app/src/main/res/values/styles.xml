@@ -5,8 +5,9 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@android:color/background_dark</item>
-        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorPrimary">#181A19</item>
+        <item name="android:colorControlNormal">#181A19</item>
         <item name="colorAccent">@android:color/white</item>
     </style>
 
@@ -15,7 +16,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="UICustomDialog" parent="android:style/Theme.Dialog">
-        <item name="android:background">@android:color/black</item>
+        <item name="android:background">#181A19</item>
         <!--背景颜色及和透明程度-->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--是否去除标题 -->
