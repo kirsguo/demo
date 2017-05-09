@@ -84,6 +84,7 @@ public class DispatcherService extends Service {
                         HashMap<String,String> map_2 = new HashMap<String, String>();
                         map_2.put("collisionLevel","1");
                         map_2.put("RVToMe","left");
+                        map_2.put("type","1");
                         HashMap<String,String> map_1 = new HashMap<String, String>();
                         map_1.put("leftStatus","1");
                         map_1.put("leftTimeLeft","20");
@@ -94,6 +95,7 @@ public class DispatcherService extends Service {
                         map_1.put("headMaxSpeed","100");
                         map_1.put("headMinSpeed","10");
                         map_1.put("rightStatus","7");
+                        map_1.put("type","2");
                         HashMap<String,HashMap<String,String>> tmp = new HashMap<String, HashMap<String, String>>();
                         tmp.put(APP_ID_APPIntersectionCollisionWarning,map_2);
                         tmp.put(APP_ID_APPTrafficLightOptimalSpeedAdvisory,map_1);

@@ -41,17 +41,7 @@ import com.example.kirsguo.demo_2.R;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.example.kirsguo.demo_2.util.Constants.APP_ID_APPIntersectionCollisionWarning;
-import static com.example.kirsguo.demo_2.util.Constants.APP_ID_APPTrafficLightOptimalSpeedAdvisory;
-import static com.example.kirsguo.demo_2.util.Constants.APP_ID_Me;
-import static com.example.kirsguo.demo_2.util.Constants.APP_ID_TrafficSign;
-import static com.example.kirsguo.demo_2.util.Constants.ERROR_FROM_COMM;
-import static com.example.kirsguo.demo_2.util.Constants.ERROR_FROM_DISPATCHER;
-import static com.example.kirsguo.demo_2.util.Constants.ERROR_FROM_LDM;
-import static com.example.kirsguo.demo_2.util.Constants.ERROR_MESSAGE;
-import static com.example.kirsguo.demo_2.util.Constants.NORMAL_MESSAGE;
-
+import static com.example.kirsguo.demo_2.util.Constants.*;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,AMapLocationListener {
     private static final String TAG = "MainActivity";
@@ -104,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private Handler uiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+
             if (msg != null) {
 //                Log.i(TAG, "handle Dispatcher Message: "+msg.obj.toString());
                 switch (msg.what){
@@ -137,7 +128,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                             apps_tmp =  null;
 //                            Log.i(TAG, "handleMessage: "+"last:"+appName_last.toString()+appName_last.size());
                         }
-
+                        if (!appName_last.contains(APP_ID_TrafficSign)){
+                            sign.setVisibility(View.INVISIBLE);
+                        }
 
 
                         if (appName_last.equals(onlyME)||appName_last.equals(meAndSign)){
@@ -197,9 +190,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
     private TextView car_speed;
     private Dialog appDialog = null;
     private UIErrorDialog errorDialog = null;
+    /***
+     * 多媒体
+     */
+    UISoundPool uiSoundPool = new UISoundPool();
 //  测试用
     private ImageView mineState;
-
+    private ImageView sign;
     private ImageView demo2;
     private ImageView demo3;
 
@@ -217,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         initLocation();
         initService();
         initBindAppService();
+        uiSoundPool.initSoundPool(this);
 
 
 
@@ -229,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                 HashMap<String,String> map = new HashMap<String, String>();
                 map.put("collisionLevel","1");
                 map.put("RVToMe","right");
+                map.put("type","2");
                 apps_last.put(APP_ID_APPIntersectionCollisionWarning,map);
                 appName_last = a;
                 initDialog();
@@ -251,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                 HashMap<String,String> map = new HashMap<String, String>();
                 map.put("collisionLevel","1");
                 map.put("RVToMe","left");
+                map.put("type","1");
                 HashMap<String,String> map_1 = new HashMap<String, String>();
                 map_1.put("leftStatus","2");
                 map_1.put("leftTimeLeft","1");
@@ -261,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                 map_1.put("headMaxSpeed","100");
                 map_1.put("headMinSpeed","10");
                 map_1.put("rightStatus","7");
+                map_1.put("type","2");
                 apps_last.put(APP_ID_APPIntersectionCollisionWarning,map);
                 apps_last.put(APP_ID_APPTrafficLightOptimalSpeedAdvisory,map_1);
                 appName_last = a;
@@ -272,8 +273,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                 mDispatcherHandler.sendMessage(msg1);
             }
         });
-        demo3 = (ImageView)findViewById(R.id.road_state);
-        demo3.setOnClickListener(new View.OnClickListener() {
+        sign = (ImageView)findViewById(R.id.road_state);
+        sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initErrorDialog("错误","按时付款了就爱好看了伐");
@@ -368,8 +369,16 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
         }
         appDialog.setContentView(GetView());
 
-
         appDialog.show();
+        int min =3;
+        for (String appName:appName_last){
+           int tmp = Integer.valueOf(apps_last.get(appName).get("type"));
+            if (tmp < min ){
+                min = tmp;
+            }
+        }
+        uiSoundPool.play(min);
+
     }
 
     /***
@@ -422,7 +431,17 @@ public class MainActivity extends AppCompatActivity implements LocationSource,AM
                     HashMap<String,String> app_1 = apps_last.get(APP_ID_Me);
                     car_speed.setText(app_1.get("speed")+"KM/H");
                     break;
-                case APP_ID_TrafficSign:break;
+                case APP_ID_TrafficSign:
+                    HashMap<String,String> app_2 = apps_last.get(APP_ID_TrafficSign);
+                    switch (app_2.get("signType")){
+                        case "0":sign.setImageResource(R.drawable.warning);break;
+                        case "1":sign.setImageResource(R.drawable.slippy);break;
+                        case "2":sign.setImageResource(R.drawable.curve);break;
+                        case "3":sign.setImageResource(R.drawable.rock);break;
+                        case "4":sign.setImageResource(R.drawable.construction);break;
+                    }
+                    uiSoundPool.play(2);
+                    break;
                 case APP_ID_APPIntersectionCollisionWarning:
                     HashMap<String,String> app_3 = apps_last.get(APP_ID_APPIntersectionCollisionWarning);
                     if (app_3.get("collisionLevel").equals("1")){
