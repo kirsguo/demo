@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/setting_COMM"
+
+            android:title="设备"
+
+            />
+        <item
+            android:id="@+id/setting_LDM"
+
+            android:title="解析"/>
+        <item
+            android:id="@+id/setting_APP"
+
+            android:title="应用"/>
+        <item
+            android:id="@+id/setting_UI"
+
+            android:title="应用"/>
+
+    </group>
+
+</menu>
