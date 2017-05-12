@@ -113,7 +113,10 @@ public class MainActivity extends AppCompatActivity  {
      *服务
      */
     private boolean mIsBound = false;
-
+    /***
+     * mDispatcherHandler app层的通信handler
+     * uiHandler    ui层handler（处理收到的应用消息）
+     */
     private Handler mDispatcherHandler = null;
     private Handler uiHandler = new Handler() {
         @Override
@@ -704,4 +707,9 @@ public class MainActivity extends AppCompatActivity  {
         context.startActivity(intent);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindAppService();
+    }
 }
